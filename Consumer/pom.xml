@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Producer</groupId>
-  <artifactId>Producer</artifactId>
+  <groupId>Consumer</groupId>
+  <artifactId>Consumer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -15,7 +15,7 @@
         </configuration>
       </plugin>
       
-      <plugin>
+            <plugin>
       <!-- Build an executable JAR -->
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-jar-plugin</artifactId>
@@ -25,13 +25,13 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>com.luisfelipejimenez.producer.Producer</mainClass>
+            <mainClass>com.luisfelipejimenez.consumer.Consumer</mainClass>
           </manifest>
         </archive>
       </configuration>
     </plugin>
-      
-          <plugin>
+    
+    <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-dependency-plugin</artifactId>
     <version>3.0.0</version>
@@ -55,8 +55,14 @@
     </plugins>
   </build>
   
-    <dependencies>
-    		<dependency>
+      <dependencies>
+		<dependency>
+			<groupId>ValueObjects</groupId>
+			<artifactId>ValueObjects</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 		    <groupId>com.rabbitmq</groupId>
 		    <artifactId>amqp-client</artifactId>
 		    <version>4.0.2</version>
@@ -86,17 +92,18 @@
 		    <artifactId>log4j-core</artifactId>
 		    <version>2.11.1</version>
 		</dependency>
-	<dependency>
+
+		<dependency>
+		  <groupId>org.apache.commons</groupId>
+		  <artifactId>commons-lang3</artifactId>
+		  <version>3.8.1</version>
+		</dependency>
+		<dependency>
 			<groupId>TransportManager</groupId>
 			<artifactId>TransportService</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		<!--<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-log4j12</artifactId>
-		    <version>1.7.25</version>
-		</dependency>-->
   </dependencies>
   
 </project>

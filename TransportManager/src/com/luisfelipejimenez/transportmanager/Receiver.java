@@ -1,8 +1,8 @@
 package com.luisfelipejimenez.transportmanager;
 
-//import java.lang.reflect.Method;
-
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.vo.MessageVO;
 import com.rabbitmq.client.Channel;
@@ -12,13 +12,15 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 
 public class Receiver extends DefaultConsumer 
 {
+	private static Logger logger = LogManager.getLogger(Receiver.class);
+	
 	public static TransportService transp = new TransportService();
 	int counter = 0;
 	
 	public Receiver() 
 	{
 		super(transp.getChannel());
-		System.out.println("Receiver - channel: "+transp.getChannel());
+		logger.info("Receiver - channel: "+transp.getChannel());
 	}
 		
 	public Receiver(Channel channel) {
@@ -32,24 +34,24 @@ public class Receiver extends DefaultConsumer
 		  
 		  try 
 		  {
-			  System.out.println("ServiceConsumer - Received ---");
+			  logger.info("ServiceConsumer - Received ---");
 		  	  MessageVO message = (MessageVO) SerializationUtils.deserialize(body);
 		  	  counter++;
 		  	  processMessage(message);
 		  	  
-		  	  System.out.println("ServiceConsumer - Message counter: "+counter+" - Thread name: "+Thread.currentThread().getName());
+		  	  logger.info("ServiceConsumer - Message counter: "+counter+" - Thread name: "+Thread.currentThread().getName());
 
 		  	  getChannel().basicAck(envelope.getDeliveryTag(), false);
 		    
 		} catch (Exception e) {
-			 System.out.println("ServiceConsumer - Exception: "+e);
+			logger.error("ServiceConsumer - Exception: ",e);
 		}
 
 	  }
 
 
 	  public void processMessage(MessageVO message) {
-		  
+		  logger.info("processMessage() ---");
 	  };
 	  
 }

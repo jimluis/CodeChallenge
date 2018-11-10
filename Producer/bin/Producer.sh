@@ -26,8 +26,8 @@ fi
 
 if [ $1 = "start" ]
 then
-    processId=ps aux | grep -i 'com.luisfelipejimenez.mindx.producer.Producer'
-    cnt=ps aux | grep -i 'com.luisfelipejimenez.mindx.producer.Producer' |wc -l
+    processId=ps aux | grep -i 'com.luisfelipejimenez.producer.Producer'
+    cnt=ps aux | grep -i 'com.luisfelipejimenez.producer.Producer' |wc -l
     echo "processId count: $cnt"
     
     if [ cnt -gt 0 ]
@@ -43,11 +43,11 @@ fi
 
 if [ $1 = "stop" ]
 then
-    processId=`ps aux| grep 'com.luisfelipejimenez.mindx.producer.Producer' | grep TransportService.properties | awk '{print $2}'`
+    processId=`ps aux| grep 'com.luisfelipejimenez.producer.Producer' | grep TransportService.properties | awk '{print $2}'`
     echo "Stopping producer with processId: $processId"
     
-    if [ ! -z "$processId" ]
-    #if ["X$processId" != "X"]
+    #if [ ! -z "$processId" ]
+    if ["X$processId" != "X"]
     then
         kill -15 $processId
     fi
