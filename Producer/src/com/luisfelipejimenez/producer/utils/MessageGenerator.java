@@ -6,8 +6,8 @@ import java.util.TimerTask;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.luisfelipejimenez.mindx.transportservice.ITransportService;
 import com.luisfelipejimenez.producer.Producer;
+import com.luisfelipejimenez.transportmanager.ITransportService;
 import com.luisfelipejimenez.vo.MessageVO;
 
 

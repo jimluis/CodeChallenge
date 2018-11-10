@@ -7,10 +7,10 @@ import java.util.Timer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.luisfelipejimenez.mindx.transportservice.ITransportService;
-import com.luisfelipejimenez.mindx.transportservice.TransportService;
 import com.luisfelipejimenez.producer.utils.MessageGenerator;
 import com.luisfelipejimenez.producer.vo.EyeTrackingGenMessage;
+import com.luisfelipejimenez.transportmanager.ITransportService;
+import com.luisfelipejimenez.transportmanager.TransportService;
 
 public class Producer 
 {
