@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Producer</groupId>
+  <artifactId>Producer</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+      <!-- Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+            <mainClass>com.luisfelipejimenez.mindx.producer.Producer</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+      
+          <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <version>3.0.0</version>
+    <executions>
+      <execution>
+        <id>copy-dependencies</id>
+        <phase>package</phase>
+        <goals>
+          <goal>copy-dependencies</goal>
+        </goals>
+        <configuration>
+          <outputDirectory>target/ext_jars</outputDirectory>
+          <overWriteReleases>false</overWriteReleases>
+          <overWriteSnapshots>false</overWriteSnapshots>
+          <overWriteIfNewer>true</overWriteIfNewer>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+  
+    </plugins>
+  </build>
+  
+    <dependencies>
+    		<dependency>
+		    <groupId>com.rabbitmq</groupId>
+		    <artifactId>amqp-client</artifactId>
+		    <version>4.0.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.22</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-simple</artifactId>
+		    <version>1.7.22</version>
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-api</artifactId>
+		    <version>2.11.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		    <version>2.11.1</version>
+		</dependency>
+	<dependency>
+			<groupId>TransportService</groupId>
+			<artifactId>TransportService</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-log4j12</artifactId>
+		    <version>1.7.25</version>
+		</dependency>-->
+  </dependencies>
+  
+</project>
