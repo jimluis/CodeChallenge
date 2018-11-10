@@ -3,7 +3,7 @@ package com.luisfelipejimenez.producer.vo;
 import java.sql.Timestamp;
 import java.util.Random;
 
-import com.luisfelipejimenez.mindx.vo.MessageVO;
+import com.luisfelipejimenez.vo.MessageVO;
 
 public class EyeTrackingGenMessage 
 {

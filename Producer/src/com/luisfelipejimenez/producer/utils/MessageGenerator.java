@@ -7,8 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.mindx.transportservice.ITransportService;
-import com.luisfelipejimenez.mindx.vo.MessageVO;
 import com.luisfelipejimenez.producer.Producer;
+import com.luisfelipejimenez.vo.MessageVO;
 
 
 public class MessageGenerator extends TimerTask 
