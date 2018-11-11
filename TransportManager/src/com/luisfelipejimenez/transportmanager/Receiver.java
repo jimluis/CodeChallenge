@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.vo.MessageVO;
-import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -13,47 +12,40 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 public class Receiver extends DefaultConsumer 
 {
 	private static Logger logger = LogManager.getLogger(Receiver.class);
-	
-	public static TransportService transp = new TransportService();
 	int counter = 0;
-	
-	public Receiver() 
-	{
-		super(transp.getChannel());
-		logger.info("Receiver - channel: "+transp.getChannel());
-	}
-		
-	public Receiver(Channel channel) {
-		super(channel);
 
+
+	public Receiver() {
+		super(TransportManager.channel);
 	}
 	
 	  public void handleDelivery(String consumerTag, Envelope envelope,
 	            BasicProperties properties, byte[] body) throws java.io.IOException 
 	  {
-		  logger.info("Receiver - Received");
+		  boolean isMessageProcessed = false;
 		  
 		  try 
 		  {
-			  
 		  	  MessageVO message = (MessageVO) SerializationUtils.deserialize(body);
 		  	  counter++;
 
-		  	  processMessage(message);
-		  	  logger.info("Receiver - counter ---"+counter);
-		  	  logger.info("Receiver - Message counter: "+counter+" - Thread name: "+Thread.currentThread().getName());
+		  	  isMessageProcessed = processMessage(message);
+		  	  logger.info("handleDelivery() - isMessageProcessed: "+isMessageProcessed);
 
-		  	  getChannel().basicAck(envelope.getDeliveryTag(), false);
+		  	  if(isMessageProcessed)
+		  		  TransportManager.channel.basicAck(envelope.getDeliveryTag(), false);
+		  	  else 
+		  		  logger.info("handleDelivery() - Message with id: "+message.getIdSeq()+" was not processed");
 		    
 		} catch (Exception e) {
-			logger.error("ServiceConsumer - Exception: ",e);
+			logger.error("handleDelivery() - Exception: ",e);
 		}
 
 	  }
 
 
-	  public void processMessage(MessageVO message) {
-		  logger.info("processMessage() ---");
+	  public boolean processMessage(MessageVO message) {
+		return false;
 	  };
 	  
 }

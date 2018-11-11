@@ -1,31 +1,33 @@
 package com.luisfelipejimenez.transportmanager;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.vo.MessageVO;
 
 
-public class Send extends TransportService
+public class Send extends TransportManager
 {
-	  public void sender(MessageVO msg) 
+	private static Logger logger = LogManager.getLogger(Send.class);
+	
+	  public static void sender(MessageVO msg, TransportManager transp) 
 	  {
-		  try 
-		  {
+		  
+			logger.debug("sender() - Starts" );
+			
+			try 
+			{
 			  	byte[] data = SerializationUtils.serialize(msg);
-			    getChannel().basicPublish("", getQueueName(), null, data);
-			    System.out.println(" [x] Sent '" + msg.toString() + "'");
-//				TransportService.channel.close();
-//			    TransportService.connection.close();
-			    System.out.println(" Done");
-			    
+			  	transp.getChannel().basicPublish("", transp.getQueueName(), null, data);
+			    logger.info("sender() - Message sent: "+ msg.toString());
+				    
 			} catch (Exception e) {
-				 System.out.println(" [x] exception '" + e );
+				logger.error("sender() - An exception occurred while sending a message", e );
 				
 			}
-//		  finally 
-//		  	{
-
-//			}
+			
+			logger.debug("sender() - Ends" );
 		    
 		  }
 }

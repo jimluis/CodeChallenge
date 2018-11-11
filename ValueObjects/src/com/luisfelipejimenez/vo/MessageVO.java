@@ -62,9 +62,9 @@ public class MessageVO implements Serializable
 
 	@Override
 	public String toString() {
-		return "MessageVO [ messageId=" + messageId + ", timestamp=" + timestamp + ", eyeId=" + eyeId + ", confidence=" + confidence
+		return "messageId=" + messageId + ", timestamp=" + timestamp + ", eyeId=" + eyeId + ", confidence=" + confidence
 				+ ", normalizedPosX=" + normalizedPosX + ", normalizedPosY=" + normalizedPosY + ", pupilDiameter="
-				+ pupilDiameter + "]";
+				+ pupilDiameter + "|";
 	}
 	
 }

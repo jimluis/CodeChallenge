@@ -9,13 +9,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.producer.utils.MessageGenerator;
 import com.luisfelipejimenez.producer.vo.EyeTrackingGenMessage;
-import com.luisfelipejimenez.transportmanager.ITransportService;
-import com.luisfelipejimenez.transportmanager.TransportService;
+import com.luisfelipejimenez.transportmanager.ITransportManager;
+import com.luisfelipejimenez.transportmanager.TransportManager;
 
 public class Producer 
 {
 	private static Logger logger = LogManager.getLogger(Producer.class);
-	public static ITransportService transportService = null;
+	public static ITransportManager transportManager = null;
 	private Properties properties = null;
 	private static long delay;
 	private static long period;
@@ -44,27 +44,23 @@ public class Producer
 		{
 			if(args != null && args.length > 0)
 			{
-				
-				for (int i = 0; i < args.length; i++) {
-					System.out.println("args: "+args[i]);
-				}
+
 				transportPropertyfile = args[0];
 				propertyfile = args[1];
-				System.out.println("propertyfile ->: "+propertyfile);
+				logger.info("propertyfile ->: "+propertyfile);
 				
-				System.out.println("Value:" + System.getProperty("log4j.configurationFile"));
-				System.out.println("Value:" + System.getProperty("logfile.name"));
+				logger.debug("Value:" + System.getProperty("log4j.configurationFile"));
+				logger.debug("Value:" + System.getProperty("logfile.name"));
 
 				if(propertyfile != null)
 				{
-					transportService = new TransportService(transportPropertyfile);
+					transportManager = new TransportManager(transportPropertyfile);
 					Producer producer = new Producer(); 
 					producer.initProperties(propertyfile);
 					producer.initService();
 					messageGen();		
 				}
-				else
-					System.exit(1);
+
 			}
 			else
 				System.out.println("propertyfile not found");
@@ -73,17 +69,15 @@ public class Producer
 			System.out.println("Exiting main");
 			
 		} catch (Exception e) {
-			System.out.println("An exception occurred in main: "+e);
+			logger.error("An exception occurred in main: ",e);
 		}
 		
-//		TransportService.channel.close();
-//	    TransportService.connection.close();
 	}
 	
 	public void initService()
 	{
 		logger.info("initService");
-		transportService.initSenderMq();
+		transportManager.initSenderConfig();
 	}
 	
 	public void initProperties(String propFileName)
@@ -93,22 +87,29 @@ public class Producer
 		
 		try 
 		{
+			if(propFileName != null && !propFileName.isEmpty()) 
+			{
+				properties = new Properties();
+				fileIn = new FileInputStream(propFileName);
+				
+				properties.load(fileIn);
+				
+				if(properties.getProperty("delay") != null && !properties.getProperty("delay").isEmpty())
+					delay = Long.valueOf(properties.getProperty("delay"));
+				else
+					logger.info("initProperties() - delay not found");
+				
+				if(properties.getProperty("period") != null && !properties.getProperty("period").isEmpty())
+					period = Long.valueOf(properties.getProperty("period"));
+				else
+					logger.info("initProperties() - portNumber not found");
 			
-			properties = new Properties();
-			fileIn = new FileInputStream(propFileName);
+			}
+			else 
+			{
+				logger.info("initSenderMq() - propFileName null or empty string" );
+			}
 			
-			properties.load(fileIn);
-			
-			if(properties.getProperty("delay") != null && !properties.getProperty("delay").isEmpty())
-				delay = Long.valueOf(properties.getProperty("delay"));
-			else
-				logger.info("initProperties() - delay not found");
-			
-			if(properties.getProperty("period") != null && !properties.getProperty("period").isEmpty())
-				period = Long.valueOf(properties.getProperty("period"));
-			else
-				logger.info("initProperties() - portNumber not found");
-		
 			
 		} catch (Exception e) {
 			logger.error("initProperties() - Not valid queueName",e);

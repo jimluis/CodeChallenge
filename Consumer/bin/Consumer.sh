@@ -34,7 +34,7 @@ then
         return
      else
         echo "Starting Consumer"
-        nohup java -cp $CLASSPATH $JVM_ARGS com.luisfelipejimenez.consumer.Consumer $BASE_PATH/etc/TransportService.properties &
+        nohup java -cp $CLASSPATH $JVM_ARGS com.luisfelipejimenez.consumer.Consumer $BASE_PATH/etc/TransportService.properties $BASE_PATH/eyeTrackerData.txt &
      fi 
 fi   
 
@@ -46,7 +46,7 @@ then
     if [ ! -z "$processId" ]
     then
         echo "Stopping Consumer with processId: $processId"
-        kill -15 $processId
+        kill -9 $processId
     else
         echo "Consumer is not running"  
     fi
