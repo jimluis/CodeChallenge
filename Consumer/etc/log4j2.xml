@@ -5,17 +5,7 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </Console>  --> 
         <RollingRandomAccessFile name="STANDARD" fileName="${sys:logfile.name}" 
-            filePattern="${sys:logfile.name}.%d{yyy-MM-dd}">
-            <PatternLayout>
-            	<pattern>%d %c{1} %-5p - %m%n</pattern>
-            </PatternLayout>
-            <Policies>
-            	<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-            </Policies>
-        </RollingRandomAccessFile>
-        
-        <RollingRandomAccessFile name="Message" fileName="${sys:logfile.name}-message.log" 
-            filePattern="${sys:logfile.name}-message.log.%d{yyy-MM-dd}">
+            filePattern="${sys:logfile.name}.%d{yyy-MM-dd}.log">
             <PatternLayout>
             	<pattern>%d %c{1} %-5p - %m%n</pattern>
             </PatternLayout>
@@ -27,8 +17,7 @@
     </Appenders>
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="Message" />  
+            <AppenderRef ref="Console" /> 
             <AppenderRef ref="STANDARD"/>
         </Root>
     </Loggers>

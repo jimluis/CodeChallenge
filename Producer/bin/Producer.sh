@@ -48,7 +48,7 @@ then
     if [ ! -z "$processId" ]
     then
         echo "Stopping producer with processId: $processId"
-        kill -15 $processId
+        kill -9 $processId
      else
         echo "Producer is not running"    
     fi
