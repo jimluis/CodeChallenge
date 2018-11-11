@@ -88,15 +88,10 @@
 		</dependency>
 	<dependency>
 			<groupId>TransportManager</groupId>
-			<artifactId>TransportService</artifactId>
+			<artifactId>TransportManager</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		<!--<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-log4j12</artifactId>
-		    <version>1.7.25</version>
-		</dependency>-->
   </dependencies>
   
 </project>

@@ -8,15 +8,15 @@ import com.luisfelipejimenez.vo.MessageVO;
 
 public class EventHandler extends Receiver
 {
-	private static Logger loggerMessage = LogManager.getLogger(Consumer.class);
+	private static Logger loggerMessage = LogManager.getLogger(EventHandler.class);
 	
 	@Override
 	public void processMessage(MessageVO msg) 
 	{
 		if(msg != null)
-			loggerMessage.info(" Consumer.messageProcessor() - message received: "+msg.toString() );
+			loggerMessage.info(" processMessage() - message received: "+msg.toString() );
 		else
-			loggerMessage.info(" message ");
+			loggerMessage.info(" message null ");
 	}
 
 

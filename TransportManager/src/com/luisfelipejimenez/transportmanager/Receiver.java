@@ -31,15 +31,17 @@ public class Receiver extends DefaultConsumer
 	  public void handleDelivery(String consumerTag, Envelope envelope,
 	            BasicProperties properties, byte[] body) throws java.io.IOException 
 	  {
+		  logger.info("Receiver - Received");
 		  
 		  try 
 		  {
-			  logger.info("ServiceConsumer - Received ---");
+			  
 		  	  MessageVO message = (MessageVO) SerializationUtils.deserialize(body);
 		  	  counter++;
+
 		  	  processMessage(message);
-		  	  
-		  	  logger.info("ServiceConsumer - Message counter: "+counter+" - Thread name: "+Thread.currentThread().getName());
+		  	  logger.info("Receiver - counter ---"+counter);
+		  	  logger.info("Receiver - Message counter: "+counter+" - Thread name: "+Thread.currentThread().getName());
 
 		  	  getChannel().basicAck(envelope.getDeliveryTag(), false);
 		    
