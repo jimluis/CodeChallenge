@@ -23,10 +23,9 @@ public class TransportManager implements ITransportManager
 	private String host = null;
 	private int portNumber;
 	private Connection connection = null;
-	private Channel channel = null;
+	protected static Channel channel = null;
 	private Receiver consumer = null;
 	Properties properties = null;
-
 	private static Logger logger = LogManager.getLogger(TransportManager.class);
 
 
@@ -62,7 +61,6 @@ public class TransportManager implements ITransportManager
 			    
 		    connection = factory.newConnection();
 		    channel = connection.createChannel();
-		    setChannel(channel);
 		    
 		    channel.queueDeclare(queueName, false, false, false, null);
 			    
@@ -85,7 +83,6 @@ public class TransportManager implements ITransportManager
 			
 			connection = factory.newConnection();
 			channel = connection.createChannel();
-
 			    			
 		} catch (Exception e) {
 			logger.error("Exception: ",e );
@@ -188,9 +185,4 @@ public class TransportManager implements ITransportManager
 		return channel;
 	}
 
-	public void setChannel(Channel channel) {
-		this.channel = channel;
-	}
-
-	
 }

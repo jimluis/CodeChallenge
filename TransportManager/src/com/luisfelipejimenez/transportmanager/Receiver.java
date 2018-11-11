@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.vo.MessageVO;
-import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -13,12 +12,11 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 public class Receiver extends DefaultConsumer 
 {
 	private static Logger logger = LogManager.getLogger(Receiver.class);
-	
 	int counter = 0;
 
-		
-	public Receiver(Channel channel) {
-		super(channel);
+
+	public Receiver() {
+		super(TransportManager.channel);
 	}
 	
 	  public void handleDelivery(String consumerTag, Envelope envelope,
@@ -35,7 +33,7 @@ public class Receiver extends DefaultConsumer
 		  	  logger.info("handleDelivery() - isMessageProcessed: "+isMessageProcessed);
 
 		  	  if(isMessageProcessed)
-		  		  getChannel().basicAck(envelope.getDeliveryTag(), false);
+		  		  TransportManager.channel.basicAck(envelope.getDeliveryTag(), false);
 		  	  else 
 		  		  logger.info("handleDelivery() - Message with id: "+message.getIdSeq()+" was not processed");
 		    

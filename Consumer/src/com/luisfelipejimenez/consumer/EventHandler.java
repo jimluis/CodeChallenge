@@ -5,16 +5,16 @@ import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.transportmanager.Receiver;
 import com.luisfelipejimenez.vo.MessageVO;
-import com.rabbitmq.client.Channel;
 
 public class EventHandler extends Receiver
 {
 	
+	public EventHandler() {
+		super();
+	}
+
 	private static Logger logger = LogManager.getLogger(EventHandler.class);
 	
-	public EventHandler(Channel channel) {
-		super(channel);
-	}
 
 	@Override
 	public boolean processMessage(MessageVO msg) 

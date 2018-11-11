@@ -35,7 +35,7 @@ public class Consumer
 				{
 					TransportManager transportService = new TransportManager(propertyfile);
 					transportService.initReceiverMq();
-					transportService.setConsumer(new EventHandler(transportService.getChannel()));
+					transportService.setConsumer(new EventHandler());
 					transportService.initConsumer();				
 				}
 					
