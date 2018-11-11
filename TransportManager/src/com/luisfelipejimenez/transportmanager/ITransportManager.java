@@ -6,6 +6,8 @@ import com.rabbitmq.client.Channel;
 public interface ITransportManager 
 {
 	public void sender(MessageVO msg);	
-	public void initReceiverMq();
-	public void initSenderMq();
+	public void initReceiverConfig();
+	public void initSenderConfig();
+	public void setConsumer(Receiver consumer);
+	public void initConsumer();
 }

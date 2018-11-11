@@ -19,7 +19,7 @@ public class TransportManager implements ITransportManager
 {
 
 
-	private String queueName = null;
+	protected String queueName = null;
 	private String host = null;
 	private int portNumber;
 	private Connection connection = null;
@@ -49,9 +49,9 @@ public class TransportManager implements ITransportManager
 	}
 
 	
-	public void initSenderMq()
+	public void initSenderConfig()
 	{
-		logger.info("initSenderMq() - Starts" );
+		logger.info("initSenderConfig() - Starts" );
 		
 		try 
 		{
@@ -65,18 +65,18 @@ public class TransportManager implements ITransportManager
 		    channel.queueDeclare(queueName, false, false, false, null);
 			    
 		} catch (Exception e) {
-			logger.error("An exception occurred while initializing senderMQ config",e );
+			logger.error("initSenderConfig() - An exception occurred while initializing sender config",e );
 		}
 	
-		logger.info("initSenderMq() - Ends" );
+		logger.info("initSenderConfig() - Ends" );
 	}
 	
 	
-	public void initReceiverMq()
+	public void initReceiverConfig()
 	{
 		try 
 		{
-			logger.info("initReceiverMq() - Before ConnectionFactory" );
+			logger.info("initReceiverConfig() - Before ConnectionFactory" );
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(host);
 			factory.setPort(portNumber);
@@ -85,7 +85,7 @@ public class TransportManager implements ITransportManager
 			channel = connection.createChannel();
 			    			
 		} catch (Exception e) {
-			logger.error("Exception: ",e );
+			logger.error("initReceiverConfig() - Exception: ",e );
 		}
 	}
 	
@@ -99,7 +99,7 @@ public class TransportManager implements ITransportManager
 			
 			    			
 		} catch (Exception e) {
-			logger.error("Exception: ",e );
+			logger.error("initConsumer() - Exception: ",e );
 		}
 	}
 	
@@ -110,27 +110,28 @@ public class TransportManager implements ITransportManager
 		
 		try 
 		{
-			
-			properties = new Properties();
-			fileIn = new FileInputStream(propFileName);
-			
-			properties.load(fileIn);
-			
-			if(properties.getProperty("host") != null && !properties.getProperty("host").isEmpty())
-				host = properties.getProperty("host");
-			else
-				logger.info("initProperties() - host not found");
-			
-			if(properties.getProperty("portNumber") != null && !properties.getProperty("portNumber").isEmpty())
-				portNumber = Integer.valueOf(properties.getProperty("portNumber"));
-			else
-				logger.info("initProperties() - portNumber not found");
-			
-			if(properties.getProperty("queueName") != null && !properties.getProperty("queueName").isEmpty())
-				queueName = properties.getProperty("queueName");
-			else
-				logger.info("initProperties() - queueName not found");
-						
+			if(propFileName != null && !propFileName.isEmpty())
+			{
+				properties = new Properties();
+				fileIn = new FileInputStream(propFileName);
+				
+				properties.load(fileIn);
+				
+				if(properties.getProperty("host") != null && !properties.getProperty("host").isEmpty())
+					host = properties.getProperty("host");
+				else
+					logger.info("initProperties() - host not found");
+				
+				if(properties.getProperty("portNumber") != null && !properties.getProperty("portNumber").isEmpty())
+					portNumber = Integer.valueOf(properties.getProperty("portNumber"));
+				else
+					logger.info("initProperties() - portNumber not found");
+				
+				if(properties.getProperty("queueName") != null && !properties.getProperty("queueName").isEmpty())
+					queueName = properties.getProperty("queueName");
+				else
+					logger.info("initProperties() - queueName not found");
+			}				
 			
 		} catch (Exception e) {
 			logger.error("initProperties() - Not valid queueName",e);
@@ -140,49 +141,19 @@ public class TransportManager implements ITransportManager
 		
 	}
 
-	
-	public Receiver getConsumer() {
-		return consumer;
-	}
 
-	public void setConsumer(Receiver consumer) {
-		this.consumer = consumer;
-	}
-
-	public String getQueueName() {
+	protected String getQueueName() {
 		return queueName;
 	}
 
-	public void setQueueName(String queueName) {
-		this.queueName = queueName;
-	}
-
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public int getPortNumber() {
-		return portNumber;
-	}
-
-	public void setPortNumber(int portNumber) {
-		this.portNumber = portNumber;
-	}
-
-	public Connection getConnection() {
-		return connection;
-	}
-
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-
-	public Channel getChannel() {
+	protected Channel getChannel() {
 		return channel;
+	}
+
+	@Override
+	public void setConsumer(Receiver consumer) {
+		this.consumer = consumer;
+		
 	}
 
 }

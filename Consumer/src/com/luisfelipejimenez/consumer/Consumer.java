@@ -4,6 +4,7 @@ package com.luisfelipejimenez.consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.luisfelipejimenez.transportmanager.ITransportManager;
 import com.luisfelipejimenez.transportmanager.TransportManager;
 
 
@@ -15,26 +16,20 @@ public class Consumer
 	{
 		
 		String propertyfile = null;
+		ITransportManager transportService = null;
 		
 		try 
 		{
 			if(args != null && args.length > 0)
-			{
-				for (int i = 0; i < args.length; i++) {
-					System.out.println("args: "+args[i]);
-				}
-				
-
-				logger.debug("Value:" + System.getProperty("log4j.configurationFile"));
-				logger.debug("Value:" + System.getProperty("logfile.name"));
-				
+			{				
 				propertyfile = args[0];
-				logger.info("propertyfile-: "+propertyfile);
+				
+				logger.info("propertyfile: "+propertyfile);
 				
 				if(propertyfile != null)
 				{
-					TransportManager transportService = new TransportManager(propertyfile);
-					transportService.initReceiverMq();
+					transportService = new TransportManager(propertyfile);
+					transportService.initReceiverConfig();
 					transportService.setConsumer(new EventHandler());
 					transportService.initConsumer();				
 				}

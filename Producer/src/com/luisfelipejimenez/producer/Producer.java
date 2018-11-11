@@ -44,10 +44,7 @@ public class Producer
 		{
 			if(args != null && args.length > 0)
 			{
-				
-				for (int i = 0; i < args.length; i++) {
-					System.out.println("args: "+args[i]);
-				}
+
 				transportPropertyfile = args[0];
 				propertyfile = args[1];
 				logger.info("propertyfile ->: "+propertyfile);
@@ -63,8 +60,7 @@ public class Producer
 					producer.initService();
 					messageGen();		
 				}
-				else
-					System.exit(1);
+
 			}
 			else
 				System.out.println("propertyfile not found");
@@ -81,7 +77,7 @@ public class Producer
 	public void initService()
 	{
 		logger.info("initService");
-		transportManager.initSenderMq();
+		transportManager.initSenderConfig();
 	}
 	
 	public void initProperties(String propFileName)
@@ -91,22 +87,29 @@ public class Producer
 		
 		try 
 		{
+			if(propFileName != null && !propFileName.isEmpty()) 
+			{
+				properties = new Properties();
+				fileIn = new FileInputStream(propFileName);
+				
+				properties.load(fileIn);
+				
+				if(properties.getProperty("delay") != null && !properties.getProperty("delay").isEmpty())
+					delay = Long.valueOf(properties.getProperty("delay"));
+				else
+					logger.info("initProperties() - delay not found");
+				
+				if(properties.getProperty("period") != null && !properties.getProperty("period").isEmpty())
+					period = Long.valueOf(properties.getProperty("period"));
+				else
+					logger.info("initProperties() - portNumber not found");
 			
-			properties = new Properties();
-			fileIn = new FileInputStream(propFileName);
+			}
+			else 
+			{
+				logger.info("initSenderMq() - propFileName null or empty string" );
+			}
 			
-			properties.load(fileIn);
-			
-			if(properties.getProperty("delay") != null && !properties.getProperty("delay").isEmpty())
-				delay = Long.valueOf(properties.getProperty("delay"));
-			else
-				logger.info("initProperties() - delay not found");
-			
-			if(properties.getProperty("period") != null && !properties.getProperty("period").isEmpty())
-				period = Long.valueOf(properties.getProperty("period"));
-			else
-				logger.info("initProperties() - portNumber not found");
-		
 			
 		} catch (Exception e) {
 			logger.error("initProperties() - Not valid queueName",e);
