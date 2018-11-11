@@ -5,18 +5,37 @@ import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.transportmanager.Receiver;
 import com.luisfelipejimenez.vo.MessageVO;
+import com.rabbitmq.client.Channel;
 
 public class EventHandler extends Receiver
 {
-	private static Logger loggerMessage = LogManager.getLogger(EventHandler.class);
 	
+	private static Logger logger = LogManager.getLogger(EventHandler.class);
+	
+	public EventHandler(Channel channel) {
+		super(channel);
+	}
+
 	@Override
-	public void processMessage(MessageVO msg) 
+	public boolean processMessage(MessageVO msg) 
 	{
-		if(msg != null)
-			loggerMessage.info(" processMessage() - message received: "+msg.toString() );
-		else
-			loggerMessage.info(" message null ");
+		boolean isMessageProcessed = false;
+		try 
+		{
+			if(msg != null) 
+			{
+				isMessageProcessed = true;
+				logger.info(" processMessage() - message received: "+msg.toString() );
+			}
+			else
+				logger.info(" message null ");
+			
+		} catch (Exception e) {
+			logger.error("processMessage() - An exception occurred while processing message ", e);
+			isMessageProcessed = false;
+		}
+		return isMessageProcessed;
+
 	}
 
 

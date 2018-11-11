@@ -1,20 +1,15 @@
 package com.luisfelipejimenez.consumer;
 
-import com.luisfelipejimenez.transportmanager.TransportService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.luisfelipejimenez.transportmanager.ITransportService;
-import com.luisfelipejimenez.transportmanager.Receiver;
-import com.luisfelipejimenez.vo.MessageVO;
+import com.luisfelipejimenez.transportmanager.TransportManager;
 
 
 public class Consumer
 {
-	public static ITransportService transportService = null;
 	private static Logger logger = LogManager.getLogger(Consumer.class);
-	
 	
 	public static void main(String[] args) throws Exception 
 	{
@@ -30,30 +25,27 @@ public class Consumer
 				}
 				
 
-				System.out.println("Value:" + System.getProperty("log4j.configurationFile"));
-				System.out.println("Value:" + System.getProperty("logfile.name"));
+				logger.debug("Value:" + System.getProperty("log4j.configurationFile"));
+				logger.debug("Value:" + System.getProperty("logfile.name"));
+				
 				propertyfile = args[0];
-				System.out.println("propertyfile-: "+propertyfile);
+				logger.info("propertyfile-: "+propertyfile);
 				
 				if(propertyfile != null)
 				{
-					TransportService transportService = new TransportService(propertyfile);
+					TransportManager transportService = new TransportManager(propertyfile);
 					transportService.initReceiverMq();
-					transportService.setReceiver(new EventHandler());
-					transportService.initConsumer();
-
-					
-					System.out.println("In main");
+					transportService.setConsumer(new EventHandler(transportService.getChannel()));
+					transportService.initConsumer();				
 				}
-				else
-					System.exit(1);
+					
 			}
 			else
-				System.out.println("propertyfile not found");
+				logger.info("propertyfile not found");
 
 			
 		} catch (Exception e) {
-			System.out.println("An exception occurred in main: "+e);
+			logger.error("An exception occurred in main: ",e);
 		}
 
 

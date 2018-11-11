@@ -14,46 +14,40 @@ public class Receiver extends DefaultConsumer
 {
 	private static Logger logger = LogManager.getLogger(Receiver.class);
 	
-	public static TransportService transp = new TransportService();
 	int counter = 0;
-	
-	public Receiver() 
-	{
-		super(transp.getChannel());
-		logger.info("Receiver - channel: "+transp.getChannel());
-	}
+
 		
 	public Receiver(Channel channel) {
 		super(channel);
-
 	}
 	
 	  public void handleDelivery(String consumerTag, Envelope envelope,
 	            BasicProperties properties, byte[] body) throws java.io.IOException 
 	  {
-		  logger.info("Receiver - Received");
+		  boolean isMessageProcessed = false;
 		  
 		  try 
 		  {
-			  
 		  	  MessageVO message = (MessageVO) SerializationUtils.deserialize(body);
 		  	  counter++;
 
-		  	  processMessage(message);
-		  	  logger.info("Receiver - counter ---"+counter);
-		  	  logger.info("Receiver - Message counter: "+counter+" - Thread name: "+Thread.currentThread().getName());
+		  	  isMessageProcessed = processMessage(message);
+		  	  logger.info("handleDelivery() - isMessageProcessed: "+isMessageProcessed);
 
-		  	  getChannel().basicAck(envelope.getDeliveryTag(), false);
+		  	  if(isMessageProcessed)
+		  		  getChannel().basicAck(envelope.getDeliveryTag(), false);
+		  	  else 
+		  		  logger.info("handleDelivery() - Message with id: "+message.getIdSeq()+" was not processed");
 		    
 		} catch (Exception e) {
-			logger.error("ServiceConsumer - Exception: ",e);
+			logger.error("handleDelivery() - Exception: ",e);
 		}
 
 	  }
 
 
-	  public void processMessage(MessageVO message) {
-		  logger.info("processMessage() ---");
+	  public boolean processMessage(MessageVO message) {
+		return false;
 	  };
 	  
 }

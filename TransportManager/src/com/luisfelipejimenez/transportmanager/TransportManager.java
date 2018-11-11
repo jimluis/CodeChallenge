@@ -15,60 +15,40 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
-public class TransportService implements ITransportService
+public class TransportManager implements ITransportManager
 {
 
 
-	private static String queueName = null;
-	private static String host = null;
-	private static int portNumber;
-	private static Connection connection = null;
-	private static Channel channel = null;
+	private String queueName = null;
+	private String host = null;
+	private int portNumber;
+	private Connection connection = null;
+	private Channel channel = null;
 	private Receiver consumer = null;
 	Properties properties = null;
 
-	private static Logger logger = LogManager.getLogger(TransportService.class);
+	private static Logger logger = LogManager.getLogger(TransportManager.class);
 
 
-	public TransportService(String propFileName) {
+	public TransportManager(String propFileName) {
 		initProperties(propFileName);
 	}
 
-	public TransportService() {
+	public TransportManager() {
 	}
 	
 	@Override
 	public void sender(MessageVO msg) 
 	{
-		logger.info("sending");
+		logger.debug("sender() - starts");
 		try {
-			sendMessage(msg);
+			Send.sender(msg, this);
 		} catch (Exception e) {
-			logger.error("Exception: ",e);
+			logger.error("An exception occurred while sending a message: ",e);
 		}
 
 	}
 
-	private static void sendMessage(MessageVO msg) throws Exception 
-	{
-		logger.info("sendMessage() - Starts" );
-	
-		try 
-		{
-		  	byte[] data = SerializationUtils.serialize(msg);
-		  	getChannel().basicPublish("", queueName, null, data);
-		    logger.info("sendMessage() - Message sent: "+ msg.toString());
-//				TransportService.channel.close();
-//			    TransportService.connection.close();
-			    
-		} catch (Exception e) {
-			logger.error("An exception occurred while sending a message", e );
-			
-		}
-		
-		logger.info("sendMessage() - Ends" );
-	    
-	}
 	
 	public void initSenderMq()
 	{
@@ -98,7 +78,7 @@ public class TransportService implements ITransportService
 	{
 		try 
 		{
-			logger.info("initReceiverMq - Before ConnectionFactory" );
+			logger.info("initReceiverMq() - Before ConnectionFactory" );
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(host);
 			factory.setPort(portNumber);
@@ -116,7 +96,7 @@ public class TransportService implements ITransportService
 	{
 		try 
 		{
-			logger.info("initReceiverMq - Before ConnectionFactory" );
+			logger.info("initConsumer() - Before generating listener" );
 			
 			channel.basicConsume(queueName, false, consumer);
 			
@@ -163,24 +143,6 @@ public class TransportService implements ITransportService
 		
 	}
 
-	@Override
-	public void receiver(MessageVO msg) {
-		System.out.println("receiver() - Ends" );
-		
-	}
-
-	@Override
-	public void processMessage(MessageVO msg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setReceiver(Receiver consumer) {
-		setConsumer(consumer);
-		
-	}
-
 	
 	public Receiver getConsumer() {
 		return consumer;
@@ -190,44 +152,44 @@ public class TransportService implements ITransportService
 		this.consumer = consumer;
 	}
 
-	public static String getQueueName() {
+	public String getQueueName() {
 		return queueName;
 	}
 
-	public static void setQueueName(String queueName) {
-		TransportService.queueName = queueName;
+	public void setQueueName(String queueName) {
+		this.queueName = queueName;
 	}
 
-	public static String getHost() {
+	public String getHost() {
 		return host;
 	}
 
-	public static void setHost(String host) {
-		TransportService.host = host;
+	public void setHost(String host) {
+		this.host = host;
 	}
 
-	public static int getPortNumber() {
+	public int getPortNumber() {
 		return portNumber;
 	}
 
-	public static void setPortNumber(int portNumber) {
-		TransportService.portNumber = portNumber;
+	public void setPortNumber(int portNumber) {
+		this.portNumber = portNumber;
 	}
 
-	public static Connection getConnection() {
+	public Connection getConnection() {
 		return connection;
 	}
 
-	public static void setConnection(Connection connection) {
-		TransportService.connection = connection;
+	public void setConnection(Connection connection) {
+		this.connection = connection;
 	}
 
-	public static Channel getChannel() {
+	public Channel getChannel() {
 		return channel;
 	}
 
-	public static void setChannel(Channel channel) {
-		TransportService.channel = channel;
+	public void setChannel(Channel channel) {
+		this.channel = channel;
 	}
 
 	

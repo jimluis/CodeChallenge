@@ -7,22 +7,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.luisfelipejimenez.producer.Producer;
-import com.luisfelipejimenez.transportmanager.ITransportService;
+import com.luisfelipejimenez.transportmanager.ITransportManager;
 import com.luisfelipejimenez.vo.MessageVO;
 
 
 public class MessageGenerator extends TimerTask 
 {
 	private static Logger logger = LogManager.getLogger(Producer.class);
-	ITransportService transportService = null;
+	ITransportManager transportManager = null;
+	
 	@Override
 	public void run() 
 	{
 		MessageVO message = new MessageVO();
 		message = eyeTrackingGenMessage(message);
 
-		transportService = Producer.transportService;
-		transportService.sender(message);
+		transportManager = Producer.transportManager;
+		transportManager.sender(message);
 		logger.info("message sent");
 		
 	}
