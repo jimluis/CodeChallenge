@@ -32,11 +32,11 @@ then
     
     if [ cnt -gt 0 ]
     then
-        echo "Can not start process with pid $processId is already running"
+        echo "Cannot start, process with pid $processId is already running"
         return
      else
         echo "Starting Producer"
-        java -cp $CLASSPATH $JVM_ARGS com.luisfelipejimenez.producer.Producer $BASE_PATH/etc/TransportService.properties $BASE_PATH/etc/Producer.properties &
+        nohup java -cp $CLASSPATH $JVM_ARGS com.luisfelipejimenez.producer.Producer $BASE_PATH/etc/TransportService.properties $BASE_PATH/etc/Producer.properties &
      fi 
 fi   
 
@@ -44,12 +44,13 @@ fi
 if [ $1 = "stop" ]
 then
     processId=`ps aux| grep 'com.luisfelipejimenez.producer.Producer' | grep TransportService.properties | awk '{print $2}'`
-    echo "Stopping producer with processId: $processId"
     
     if [ ! -z "$processId" ]
-    #if ["X$processId" != "X"]
     then
+        echo "Stopping producer with processId: $processId"
         kill -15 $processId
+     else
+        echo "Producer is not running"    
     fi
     
 fi   
