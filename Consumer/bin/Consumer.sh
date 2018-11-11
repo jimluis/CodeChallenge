@@ -2,7 +2,7 @@
 
 CURRENT_PATH=`pwd`
 BASE_PATH=$(dirname "${CURRENT_PATH}")
-echo "**iii** basepath: $BASE_PATH"
+echo "basepath: $BASE_PATH"
 
 export JVM_ARGS="-Dlog4j.configurationFile=$BASE_PATH/etc/log4j2.xml -Dlogfile.name=$BASE_PATH/logs/consumer.log"
 
@@ -30,25 +30,25 @@ then
     
     if [ cnt -gt 0 ]
     then
-        echo "Can not start process with pid $processId is already running"
+        echo "Cannot start, process with pid $processId is already running"
         return
      else
         echo "Starting Consumer"
-        java -cp $CLASSPATH $JVM_ARGS com.luisfelipejimenez.consumer.Consumer $BASE_PATH/etc/TransportService.properties &
+        nohup java -cp $CLASSPATH $JVM_ARGS com.luisfelipejimenez.consumer.Consumer $BASE_PATH/etc/TransportService.properties &
      fi 
 fi   
 
 
 if [ $1 = "stop" ] 
 then
-echo "Stopping Consumer..."
     processId=`ps aux| grep 'com.luisfelipejimenez.consumer.Consumer' | grep TransportService.properties | awk '{print $2}'`
-    echo "Stopping Consumer"
     
     if [ ! -z "$processId" ]
-    #if ["X$processId" != "X"]
     then
+        echo "Stopping Consumer with processId: $processId"
         kill -15 $processId
+    else
+        echo "Consumer is not running"  
     fi
     
 fi   
