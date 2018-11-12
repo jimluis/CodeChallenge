@@ -4,7 +4,7 @@ Overview:
 
 Assumption: The Producer and Consumer will be deployed in a Linux box. 
 
-- Producer
+- Producer:
     Simulates raw data provided from an eye tracker, and sends messages to the consumer (at 60 to ~1000 messages per second, configurable value),
     through the TransportManager
     
@@ -18,7 +18,7 @@ Assumption: The Producer and Consumer will be deployed in a Linux box.
 - Consumer:
     Receives and process messages by writing them to a text file (eyeTrackerData.txt) 
     
-- ValueObjects
+- ValueObjects:
     Contains the Message object    
     
 -  The transport broker used in the project is RabbitMQ  
