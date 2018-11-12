@@ -29,7 +29,8 @@ General instructions:
 1. Install RabbitMQ
 2. Start the RabbitMQ server
 3. Deploy the Producer and Consumer in a Linux box
-4. Run the Producer and Consumer
+4. Run the Producer
+4. Run the Consumer
 
 
 
@@ -41,13 +42,11 @@ Linux Steps:
     
 2. Once homebrew is installed, install rabbitMQ. Run: brew install rabbitmq
 
-3. To start rabbitmq and restart at login run:
+3. To start rabbitmq run:
    brew services start rabbitmq
-   Or, if you don't want/need a background service you can just run:
-   rabbitmq-server
 
 4. in the browser go to: http://localhost:15672/
-   RabbitMQ server should be runnig
+   RabbitMQ server should be running
 
 5. User: guest, Password: guest
 
