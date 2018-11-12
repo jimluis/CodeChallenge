@@ -61,9 +61,12 @@ public class EventHandler extends Receiver
 		
         try 
         {
-            os.write(data.getBytes(), 0, data.length());
-            
-            isMsgWritten = true;
+        	if(data != null && !data.isEmpty())
+        	{
+                os.write(data.getBytes(), 0, data.length());
+                
+                isMsgWritten = true;
+        	}
             
         } catch (IOException e) {
         	isMsgWritten = false;
